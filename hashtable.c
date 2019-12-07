@@ -25,27 +25,6 @@ void add(hashtable* h, void* key, void* data) {
     h->arr[i] = tmp;
 }
 
-void _del(hashtable* h, void* key) {
-    int i = hash(&key, h->size);
-    hnode* del;
-    if (h->arr[i]->key = key) {
-        del = h->arr[i];
-        h->arr[i] = h->arr[i]->next;
-        free(del);
-    } else {
-        hnode* tmp = h->arr[i];
-        while (tmp->next != NULL) {
-            if (tmp->next->key = key) {
-                del = tmp->next;
-                tmp->next = tmp->next->next;
-                free(del);
-                return;
-            }
-            tmp = tmp->next;
-        }
-    }
-}
-
 void del(hashtable* h, void* key) {
     int i = hash(&key, h->size);
     hnode* tmp = h->arr[i];
@@ -110,10 +89,6 @@ int main(int argc, char* argv[]) {
     add(h, &b, &c);
     printf("%c: %d\n", 'a', *(int*)get(h, &a));
     printf("%c: %d\n", 'b', *(int*)get(h, &b));
-    del(h, &a);
-    if (get(h, &a) == NULL) {
-        printf("yesss\n");
-    }
     destory(h);
     printf("end");
     return 0;

@@ -29,18 +29,18 @@ void del(hashtable* h, void* key) {
     int i = hash(&key, h->size);
     hnode* tmp = h->arr[i];
     hnode* prev = NULL;
-    while (tmp->key != key && tmp->next != NULL) {
+    while (tmp != NULL) {
+        if (tmp->key == key) {
+            if (prev) {
+                prev->next = tmp->next;
+            } else {
+                h->arr[i] = tmp->next;
+            }
+            free(tmp);
+            return;
+        }
         prev = tmp;
         tmp = tmp->next;
-    }
-    if (tmp->key == key) {
-        if (prev) {
-            prev->next = tmp->next;
-        } else {
-            h->arr[i] = tmp->next;
-        }
-        free(tmp);
-        printf("ok\n");
     }
 }
 
@@ -81,7 +81,7 @@ void destory(hashtable* h) {
 }
 
 int main(int argc, char* argv[]) {
-    hashtable* h = create(1);
+    hashtable* h = create(10);
     int a = 0;
     int b = 1;
     int c = 2;
@@ -89,6 +89,10 @@ int main(int argc, char* argv[]) {
     add(h, &b, &c);
     printf("%c: %d\n", 'a', *(int*)get(h, &a));
     printf("%c: %d\n", 'b', *(int*)get(h, &b));
+    del(h, &a);
+    if (get(h, &a) == NULL) {
+        printf("sucssefully deleted\n");
+    }
     destory(h);
     printf("end");
     return 0;
